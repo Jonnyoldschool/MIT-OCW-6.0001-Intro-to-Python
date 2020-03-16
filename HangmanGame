@@ -50,6 +50,18 @@ def choose_word(wordlist):
 # so that it can be accessed from anywhere in the program
 wordlist = load_words()
 
+def score(secret_word, lives):
+    '''
+    secret_word: string, the word the user is guessing; assumes all letters are lowercase
+    lives: the number of lives the player has left
+    returns: the number of unique letters in secret_word
+    '''
+    unique = []
+    for char in secret_word:
+        if char not in unique:
+            unique.append(char)
+    score = lives * len(unique)
+    return score
 
 def is_word_guessed(secret_word, letters_guessed):
     '''
@@ -68,7 +80,7 @@ def is_word_guessed(secret_word, letters_guessed):
                 common_letters += 1
                 break
     if common_letters == len(secret_word):
-        print("You have guessed the secret word!")
+        print("Oh my fucking god you got it! The word was", secret_word + "!")
         return True
     else:
         return False
@@ -136,29 +148,43 @@ def hangman(secret_word):
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
     lives = 6
+    warnings = 3
+    vowels = "aeiou"
     letters_guessed = []
     print("I am thinking of a word that is", len(secret_word), "letters long.")
     while is_word_guessed(secret_word, letters_guessed) == False:
-        if lives == 0:
+        if lives <= 0:
             print("You have no lives left. GAME OVER!")
+            print("The word I was thinking of was", secret_word)
             break
         else:
+            print("You have", str(warnings), "warnings left.")
             print("You have", str(lives), "guesses left.")
             available_letters = get_available_letters(letters_guessed)
             print("Available letters:", "".join(available_letters))
-            guess = input("Type your guess:")
+            guess = str.lower(input("Type your guess:"))
             if guess in available_letters:
                 letters_guessed.append(guess)
                 if guess in secret_word:
-                    print("Correct!", str(guess), "is in the secret word! :D")
+                    print("Correct!", str(guess), "is in the secret word!")
                 else:
-                    print("Sorry!", str(guess), "is not in the secret word! :(")
-                    lives -= 1
+                    print("Sorry!", str(guess), "is not in the secret word!")
+                    if guess in vowels:
+                        lives -= 2
+                    else:
+                        lives -= 1
             else:
-                print("Invalid guess, try again")
+                if str.isalpha(guess) == False:
+                    print("Your guess must be a letter, dumbie!")
+                else:
+                    print("You can't guess the same letter twice, dumbie!")
+                if warnings == 0:
+                    lives -= 1
+                else:
+                    warnings -= 1
             print("".join(get_guessed_word(secret_word, letters_guessed)))
             print("-------------------------------------------------------")
-        
+    print("Your score was", score(secret_word, lives))
             
 
 
@@ -255,3 +281,4 @@ if __name__ == "__main__":
     
     #secret_word = choose_word(wordlist)
     #hangman_with_hints(secret_word)
+
