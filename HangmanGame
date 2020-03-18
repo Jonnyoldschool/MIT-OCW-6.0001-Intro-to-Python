@@ -225,7 +225,7 @@ def match_with_gaps(my_word, other_word):
 
 
 
-def show_possible_matches(my_word):
+def show_possible_matches(my_word,letters_guessed):
     '''
     my_word: string with _ characters, current guess of secret word
     returns: nothing, but should print out every word in wordlist that matches my_word
@@ -243,6 +243,8 @@ def show_possible_matches(my_word):
             matching_letters = 0
             for letter in words:
                 if letter in my_word and letter != my_word[index]:
+                    break
+                elif letter in letters_guessed and letter not in my_word:
                     break
                 else:
                     matching_letters += 1           
@@ -309,7 +311,7 @@ def hangman_with_hints(secret_word):
                         lives -= 1
             elif guess == "*":
                 print("The word I'm thinking of is one of these words:")
-                show_possible_matches("".join(get_guessed_word(secret_word, letters_guessed)))
+                show_possible_matches("".join(get_guessed_word(secret_word, letters_guessed)),letters_guessed)
             else:
                 if str.isalpha(guess) == False:
                     print("Your guess must be a letter, dumbie!")
