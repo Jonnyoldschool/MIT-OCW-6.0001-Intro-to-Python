@@ -1,3 +1,5 @@
 # MIT-OCW-6.0001-Intro-to-Python
-This is a game of hangman developed as part of the MIT course 6.0001 Introduction to Programming in Python. 
-It is problem set 2 in this course.
+This folder contains the problem sets included on the MIT Open Courseware 6.0001 Intro to Python course.
+
+Problem Set 2 - Hangman Game
+Problem Set 3 - Word Game
